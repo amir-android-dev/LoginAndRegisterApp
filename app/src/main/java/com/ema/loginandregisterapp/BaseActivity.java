@@ -9,9 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class BaseActivity extends AppCompatActivity {
 
     //todo login go to registerActivity and take the user and pass with you
-    public void openActivity(Context context, Class<?> cls) {
-        Intent intent1 = new Intent(context, cls);
-        startActivity(intent1);
+    public void openActivity(Context context, Class<?> cls, String username) {
+        Intent intent = new Intent(context, cls);
+        intent.putExtra(Constants.INTENT_USERNAME, username);
+        startActivity(intent);
 
     }
 

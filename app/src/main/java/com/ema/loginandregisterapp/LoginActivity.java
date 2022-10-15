@@ -42,12 +42,21 @@ public class LoginActivity extends BaseActivity {
 
         //fetchsendUserDataFromRegisterActivity();
         btnLogin.setOnClickListener(new View.OnClickListener() {
+            String username = etUsername.getText().toString();
+            @Override
+            public void onClick(View v) {
+
+                openActivity(LoginActivity.this, WelcomeActivity.class, username);
+                saveUsernameInPreferences(username);
+            }
+        });
+
+        tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 openActivity(LoginActivity.this, RegisterActivity.class, username, password);
-                saveUsernameInPreferences(username);
             }
         });
     }
@@ -72,7 +81,7 @@ public class LoginActivity extends BaseActivity {
             lastname = data.getStringExtra(INTENT_LASTNAME);
         }
         if (requestCode == Constants.INTENT_START_ACTIVITY_FOR_RESULT && resultCode == RESULT_OK) {
-            if (username != null && pass != null && firstname != null && lastname != null ) {
+            if (username != null && pass != null && firstname != null && lastname != null) {
                 etUsername.setText(username);
                 etPassword.setText(pass);
                 displayToast(this, "Hi " + firstname + " " + lastname);
