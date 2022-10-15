@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LoginAndRegisterApp</string>
+    <string name="username">USERNAME</string>
+    <string name="password">PASSWORT</string>
+    <string name="firstname">VORNAME</string>
+    <string name="lastname">NACHNAME</string>
+    <string name="register">REGISTRIEREN</string>
+    <string name="login">EINLOGGEN</string>
+</resources>
