@@ -5,5 +5,7 @@
     <string name="firstname">FIRSTNAME</string>
     <string name="lastname">LASTNAME</string>
     <string name="register">REGISTER</string>
+    <string name="error">An error has occurred</string>
+    <string name="success">successfully registered</string>
     <string name="login">LOGIN</string>
 </resources>

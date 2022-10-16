@@ -7,4 +7,6 @@
     <string name="lastname">NACHNAME</string>
     <string name="register">REGISTRIEREN</string>
     <string name="login">EINLOGGEN</string>
+    <string name="error">Ein Fehler ist aufgetreten</string>
+    <string name="success">Erfolgreich registriert</string>
 </resources>

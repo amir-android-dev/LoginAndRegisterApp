@@ -41,17 +41,20 @@ public class LoginActivity extends BaseActivity {
         btnLogin = findViewById(R.id.btn_login);
 
         etUsername.setText(loadSavedUserFromPreferences());
-
         //fetchsendUserDataFromRegisterActivity();
         btnLogin.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 String username = etUsername.getText().toString();
-                //openActivity(LoginActivity.this, WelcomeActivity.class, username);
-                Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
-                startActivity(intent);
-                saveUsernameInPreferences(username);
+                String pass = etPassword.getText().toString();
+
+                if (checkIfTheRegisteredUserExist(username, pass)) {
+                    displayToast(LoginActivity.this, "successfully registered");
+                    openActivity(LoginActivity.this, WelcomeActivity.class);
+                    saveUsernameInPreferences(username);
+                } else {
+                    displayToast(LoginActivity.this, "An error has occurred");
+                }
             }
         });
 
@@ -125,6 +128,19 @@ public class LoginActivity extends BaseActivity {
             return "";
         }
     }
+
+    private boolean checkIfTheRegisteredUserExist(String username, String pass) {
+        String users = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_LIST, "");
+        List<User> usersFromString = UserUtil.userListFromString(users);
+
+        for (User user : usersFromString) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(pass)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
 }

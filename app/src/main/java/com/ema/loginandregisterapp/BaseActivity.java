@@ -15,6 +15,10 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+    public void openActivity(Context context, Class<?> cls) {
+        Intent intent = new Intent(context, cls);
+        startActivity(intent);
+    }
 
     public void openActivity(Context context, Class<?> cls, String username, String pass) {
         Intent intent = new Intent(context, cls);
