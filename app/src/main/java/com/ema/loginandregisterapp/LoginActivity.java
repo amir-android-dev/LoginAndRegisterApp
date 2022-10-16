@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class LoginActivity extends BaseActivity {
     private SharedPreferences sharedPreferences;
     EditText etUsername;
@@ -28,7 +30,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        sharedPreferences = getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERANCES, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
         setupUI();
     }
 
@@ -42,11 +44,13 @@ public class LoginActivity extends BaseActivity {
 
         //fetchsendUserDataFromRegisterActivity();
         btnLogin.setOnClickListener(new View.OnClickListener() {
-            String username = etUsername.getText().toString();
+
             @Override
             public void onClick(View v) {
-
-                openActivity(LoginActivity.this, WelcomeActivity.class, username);
+                String username = etUsername.getText().toString();
+                //openActivity(LoginActivity.this, WelcomeActivity.class, username);
+                Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+                startActivity(intent);
                 saveUsernameInPreferences(username);
             }
         });
@@ -108,21 +112,19 @@ public class LoginActivity extends BaseActivity {
     @SuppressLint("CommitPrefEdits")
     private void saveUsernameInPreferences(String username) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Constants.KEY_SHARED_PREFERANCES_EDIT_LOAD, username);
-
+        editor.putString(Constants.KEY_SHARED_PREFERENCES_EDIT_LOAD, username);
         editor.commit();
     }
 
     private String loadSavedUserFromPreferences() {
-
-        String username = sharedPreferences.getString(Constants.KEY_SHARED_PREFERANCES_EDIT_LOAD, "");
+        String username = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_EDIT_LOAD, "");
 
         if (!username.isEmpty() && username != null) {
             return username;
         } else {
             return "";
         }
-
-
     }
+
+
 }

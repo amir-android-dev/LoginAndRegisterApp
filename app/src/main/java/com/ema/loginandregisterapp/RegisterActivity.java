@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -17,7 +18,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RegisterActivity extends BaseActivity {
+    SharedPreferences sharedPreferences;
+
     EditText etUsername;
     EditText etPassword;
     EditText etFirstname;
@@ -28,6 +34,7 @@ public class RegisterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        sharedPreferences = getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
         setupUI();
     }
 
@@ -52,6 +59,7 @@ public class RegisterActivity extends BaseActivity {
                 String firstname = etFirstname.getText().toString();
                 String lastname = etLastname.getText().toString();
                 goBackToLoginActivity(username, pass, firstname, lastname);
+                saveUsers(username, pass, firstname, lastname);
             }
         });
     }
@@ -73,4 +81,26 @@ public class RegisterActivity extends BaseActivity {
         etLastname.setText(savedInstanceState.getString(INTENT_LASTNAME, ""));
         super.onRestoreInstanceState(savedInstanceState);
     }
+
+
+    private void saveUsers(String username, String password, String firstname, String lastname) {
+        List<User> currentlySaveUserList = loadUsers();
+        User user = new User(username, password, firstname, lastname);
+
+        currentlySaveUserList.add(user);
+        String userListToString = UserUtil.userListToString(currentlySaveUserList);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Constants.KEY_SHARED_PREFERENCES_LIST, userListToString);
+        editor.commit();
+
+    }
+
+    private List<User> loadUsers() {
+        String userInString = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_LIST, "");
+        List<User> users = UserUtil.userListFromString(userInString);
+        return users;
+    }
+
+
 }
