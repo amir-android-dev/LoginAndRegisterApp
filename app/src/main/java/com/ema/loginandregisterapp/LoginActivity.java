@@ -41,7 +41,7 @@ public class LoginActivity extends BaseActivity {
         btnLogin = findViewById(R.id.btn_login);
 
         etUsername.setText(loadSavedUserFromPreferences());
-        //fetchsendUserDataFromRegisterActivity();
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +67,6 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
