@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 
+
+
     //todo login go to registerActivity and take the user and pass with you
     public void openActivity(Context context, Class<?> cls, String username) {
         Intent intent = new Intent(context, cls);

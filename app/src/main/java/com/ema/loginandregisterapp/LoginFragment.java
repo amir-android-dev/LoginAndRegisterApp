@@ -1,5 +1,7 @@
 package com.ema.loginandregisterapp;
 
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 import static com.ema.loginandregisterapp.Constants.INTENT_FIRSTNAME;
 import static com.ema.loginandregisterapp.Constants.INTENT_LASTNAME;
 import static com.ema.loginandregisterapp.Constants.INTENT_PASSWORD;
@@ -7,19 +9,26 @@ import static com.ema.loginandregisterapp.Constants.INTENT_USERNAME;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
-public class LoginActivity extends BaseActivity {
+public  class LoginFragment extends BaseFragment {
+
     private SharedPreferences sharedPreferences;
     EditText etUsername;
     EditText etPassword;
@@ -27,18 +36,34 @@ public class LoginActivity extends BaseActivity {
     TextView tvRegister;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        sharedPreferences = getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
-        setupUI();
+        Activity activity = getActivity();
+        if (activity != null) {
+            sharedPreferences = requireActivity().getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
+        }
+
     }
 
-    private void setupUI() {
-        etUsername = findViewById(R.id.et_username_login);
-        etPassword = findViewById(R.id.et_pass_login);
-        tvRegister = findViewById(R.id.tv_register_login);
-        btnLogin = findViewById(R.id.btn_login);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_login, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setupUI(view);
+        onRestoreInstanceState(savedInstanceState);
+    }
+
+    private void setupUI(View view) {
+        etUsername = view.findViewById(R.id.et_username_login);
+        etPassword = view.findViewById(R.id.et_pass_login);
+        tvRegister = view.findViewById(R.id.tv_register_login);
+        btnLogin = view.findViewById(R.id.btn_login);
 
         etUsername.setText(loadSavedUserFromPreferences());
 
@@ -49,11 +74,11 @@ public class LoginActivity extends BaseActivity {
                 String pass = etPassword.getText().toString();
 
                 if (checkIfTheRegisteredUserExist(username, pass)) {
-                    displayToast(LoginActivity.this, "successfully registered");
-                    openActivity(LoginActivity.this, WelcomeActivity.class);
+                    displayToast(requireContext(), "successfully registered");
+                    openActivity(requireContext(), WelcomeActivity.class);
                     saveUsernameInPreferences(username);
                 } else {
-                    displayToast(LoginActivity.this, "An error has occurred");
+                    displayToast(requireContext(), "An error has occurred");
                 }
             }
         });
@@ -63,13 +88,13 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
-                openActivity(LoginActivity.this, RegisterActivity.class, username, password);
+                openActivity(requireContext(), RegisterActivity.class, username, password);
             }
         });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         String username = null;
         if (data != null) {
             username = data.getStringExtra(INTENT_USERNAME);
@@ -90,7 +115,7 @@ public class LoginActivity extends BaseActivity {
             if (username != null && pass != null && firstname != null && lastname != null) {
                 etUsername.setText(username);
                 etPassword.setText(pass);
-                displayToast(this, "Hi " + firstname + " " + lastname);
+                displayToast(requireContext(), "Hi " + firstname + " " + lastname);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -103,14 +128,19 @@ public class LoginActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
-        etUsername.setText(savedInstanceState.getString(INTENT_USERNAME, ""));
-        etPassword.setText(savedInstanceState.getString(INTENT_PASSWORD, ""));
-        super.onRestoreInstanceState(savedInstanceState);
+
+    private void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+            etUsername.setText(savedInstanceState.getString(INTENT_USERNAME, ""));
+        }
+        if (savedInstanceState != null) {
+            etPassword.setText(savedInstanceState.getString(INTENT_PASSWORD, ""));
+        }
+
     }
 
-    //shared preferances
+    //shared prefrences
     @SuppressLint("CommitPrefEdits")
     private void saveUsernameInPreferences(String username) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -139,6 +169,12 @@ public class LoginActivity extends BaseActivity {
         }
         return false;
     }
+
+
+    protected static LoginFragment newInstance() {
+        return new LoginFragment();
+    }
+
 
 
 
