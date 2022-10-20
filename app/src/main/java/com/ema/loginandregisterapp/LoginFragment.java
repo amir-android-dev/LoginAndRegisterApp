@@ -1,20 +1,14 @@
 package com.ema.loginandregisterapp;
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
-import static com.ema.loginandregisterapp.Constants.INTENT_FIRSTNAME;
-import static com.ema.loginandregisterapp.Constants.INTENT_LASTNAME;
 import static com.ema.loginandregisterapp.Constants.INTENT_PASSWORD;
 import static com.ema.loginandregisterapp.Constants.INTENT_USERNAME;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,11 +17,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
-public  class LoginFragment extends BaseFragment {
+public class LoginFragment extends BaseFragment {
 
     private SharedPreferences sharedPreferences;
     EditText etUsername;
@@ -75,7 +68,7 @@ public  class LoginFragment extends BaseFragment {
 
                 if (checkIfTheRegisteredUserExist(username, pass)) {
                     displayToast(requireContext(), "successfully registered");
-                    openActivity(requireContext(), WelcomeActivity.class);
+                    navigateFromLoginToWelcome(view);
                     saveUsernameInPreferences(username);
                 } else {
                     displayToast(requireContext(), "An error has occurred");
@@ -88,38 +81,11 @@ public  class LoginFragment extends BaseFragment {
             public void onClick(View v) {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
-                openActivity(requireContext(), RegisterActivity.class, username, password);
+                navigateFromLoginToRegister(username, password, view);
             }
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        String username = null;
-        if (data != null) {
-            username = data.getStringExtra(INTENT_USERNAME);
-        }
-        String pass = null;
-        if (data != null) {
-            pass = data.getStringExtra(INTENT_PASSWORD);
-        }
-        String firstname = null;
-        if (data != null) {
-            firstname = data.getStringExtra(INTENT_FIRSTNAME);
-        }
-        String lastname = null;
-        if (data != null) {
-            lastname = data.getStringExtra(INTENT_LASTNAME);
-        }
-        if (requestCode == Constants.INTENT_START_ACTIVITY_FOR_RESULT && resultCode == RESULT_OK) {
-            if (username != null && pass != null && firstname != null && lastname != null) {
-                etUsername.setText(username);
-                etPassword.setText(pass);
-                displayToast(requireContext(), "Hi " + firstname + " " + lastname);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -170,12 +136,9 @@ public  class LoginFragment extends BaseFragment {
         return false;
     }
 
-
     protected static LoginFragment newInstance() {
         return new LoginFragment();
     }
-
-
 
 
 }

@@ -2,9 +2,13 @@ package com.ema.loginandregisterapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 public class BaseFragment extends Fragment {
 
@@ -25,6 +29,24 @@ public class BaseFragment extends Fragment {
         startActivityForResult(intent, Constants.INTENT_START_ACTIVITY_FOR_RESULT);
     }
 
+    //naviagte
+    //login
+    public void navigateFromLoginToRegister(String username, String password, View view) {
+        NavDirections action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment(username, password);
+        Navigation.findNavController(view).navigate(action);
+    }
+
+    public void navigateFromLoginToWelcome(View view) {
+        NavDirections action = LoginFragmentDirections.actionLoginFragmentToWelcomeFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+
+    //register
+    public void getSendDateFromRegisterFragment(EditText etUsername, EditText etPassword) {
+        RegisterFragmentArgs args = RegisterFragmentArgs.fromBundle(getArguments());
+        etUsername.setText(args.getUsername());
+        etPassword.setText(args.getPassword());
+    }
 
 
 }

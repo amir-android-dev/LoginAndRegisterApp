@@ -1,5 +1,6 @@
 package com.ema.loginandregisterapp;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.ema.loginandregisterapp.Constants.INTENT_FIRSTNAME;
 import static com.ema.loginandregisterapp.Constants.INTENT_LASTNAME;
 import static com.ema.loginandregisterapp.Constants.INTENT_PASSWORD;
@@ -7,21 +8,19 @@ import static com.ema.loginandregisterapp.Constants.INTENT_USERNAME;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class RegisterActivity extends BaseActivity {
+public class RegisterFragment extends BaseFragment {
     SharedPreferences sharedPreferences;
 
     EditText etUsername;
@@ -31,25 +30,41 @@ public class RegisterActivity extends BaseActivity {
     Button btnRegister;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        sharedPreferences = getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
-        setupUI();
+
+        Activity activity = getActivity();
+        if(activity!= null){
+            sharedPreferences = requireActivity().getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
+        }
+
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_register,container,false);
+    }
 
-    private void setupUI() {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupUI(view);
+        onRestoreInstanceState(savedInstanceState);
+        getSendDateFromRegisterFragment(etUsername,etPassword);
+    }
 
-        etUsername = findViewById(R.id.et_username_register);
-        etPassword = findViewById(R.id.et_pass_register);
-        etFirstname = findViewById(R.id.et_firstName_register);
-        etLastname = findViewById(R.id.et_lastName_register);
-        btnRegister = findViewById(R.id.btn_register);
+    private void setupUI(View view) {
+
+        etUsername = view.findViewById(R.id.et_username_register);
+        etPassword = view.findViewById(R.id.et_pass_register);
+        etFirstname = view.findViewById(R.id.et_firstName_register);
+        etLastname = view.findViewById(R.id.et_lastName_register);
+        btnRegister = view.findViewById(R.id.btn_register);
 
 
-        etUsername.setText(getIntent().getStringExtra(INTENT_USERNAME));
-        etPassword.setText(getIntent().getStringExtra(Constants.INTENT_PASSWORD));
+
+
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +73,7 @@ public class RegisterActivity extends BaseActivity {
                 String pass = etPassword.getText().toString();
                 String firstname = etFirstname.getText().toString();
                 String lastname = etLastname.getText().toString();
-                goBackToLoginActivity(username, pass, firstname, lastname);
+
                 saveUsers(username, pass, firstname, lastname);
             }
         });
@@ -73,13 +88,22 @@ public class RegisterActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
-        etUsername.setText(savedInstanceState.getString(INTENT_USERNAME, ""));
-        etPassword.setText(savedInstanceState.getString(INTENT_PASSWORD, ""));
-        etFirstname.setText(savedInstanceState.getString(INTENT_FIRSTNAME, ""));
-        etLastname.setText(savedInstanceState.getString(INTENT_LASTNAME, ""));
-        super.onRestoreInstanceState(savedInstanceState);
+
+    private void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+            etUsername.setText(savedInstanceState.getString(INTENT_USERNAME, ""));
+        }
+        if (savedInstanceState != null) {
+            etPassword.setText(savedInstanceState.getString(INTENT_PASSWORD, ""));
+        }
+        if (savedInstanceState != null) {
+            etFirstname.setText(savedInstanceState.getString(INTENT_FIRSTNAME, ""));
+        }
+        if (savedInstanceState != null) {
+            etLastname.setText(savedInstanceState.getString(INTENT_LASTNAME, ""));
+        }
+
     }
 
 
