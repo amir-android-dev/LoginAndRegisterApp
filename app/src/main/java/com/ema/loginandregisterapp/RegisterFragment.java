@@ -75,6 +75,7 @@ public class RegisterFragment extends BaseFragment {
                 String lastname = etLastname.getText().toString();
 
                 saveUsers(username, pass, firstname, lastname);
+                goBackToLoginFragment(view);
             }
         });
     }

@@ -47,6 +47,9 @@ public class BaseFragment extends Fragment {
         etUsername.setText(args.getUsername());
         etPassword.setText(args.getPassword());
     }
+    public void goBackToLoginFragment(View view){
+        Navigation.findNavController(view).popBackStack();
+    }
 
 
 }
