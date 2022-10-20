@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     tools:context=".UserProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_username_userProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawablePadding="5dp"
+        android:padding="5dp"
+        android:text="@string/hello_blank_fragment"
+        app:drawableLeftCompat="@drawable/ic_baseline_rename_24"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_pass_userProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawablePadding="5dp"
+        android:padding="5dp"
+        android:text="@string/hello_blank_fragment"
+        app:drawableLeftCompat="@drawable/ic_password_24"
+        app:layout_constraintTop_toBottomOf="@id/tv_username_userProfile" />
+
+    <TextView
+        android:id="@+id/tv_firstname_userProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawablePadding="5dp"
+        android:padding="5dp"
+        android:text="@string/hello_blank_fragment"
+        app:drawableLeftCompat="@drawable/ic_firstname_alt_24"
+        app:layout_constraintTop_toBottomOf="@id/tv_pass_userProfile" />
+
+    <TextView
+        android:id="@+id/tv_lastname_userProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawablePadding="5dp"
+        android:padding="5dp"
+        android:text="@string/hello_blank_fragment"
+        app:drawableLeftCompat="@drawable/ic_familyname_24"
+        app:layout_constraintTop_toBottomOf="@id/tv_firstname_userProfile" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="10dp"
+    android:id="@+id/card_view_adapter"
     app:cardCornerRadius="10dp">
 
 
