@@ -1,14 +1,13 @@
 package com.ema.loginandregisterapp;
-
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public class UserAdapter extends RecyclerView.Adapter<MViewHolder> {
     List<User> users;
     Context context;
 
-    public UserAdapter(List<User> users,Context context) {
+    public UserAdapter(List<User> users, Context context) {
         this.context = context;
         this.users = users;
     }
@@ -39,10 +38,16 @@ public class UserAdapter extends RecyclerView.Adapter<MViewHolder> {
             @Override
             public void onClick(View v) {
 
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.INTENT_USERNAME, user.getUsername());
+                bundle.putString(Constants.INTENT_PASSWORD, user.getPassword());
+                bundle.putString(Constants.INTENT_FIRSTNAME, user.getFirstname());
+                bundle.putString(Constants.INTENT_LASTNAME, user.getLastname());
+
+                Navigation.findNavController(v).navigate(R.id.userProfileFragment, bundle);
+
             }
         });
-
-
     }
 
     @Override

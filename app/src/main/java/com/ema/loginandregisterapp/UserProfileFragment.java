@@ -30,7 +30,6 @@ public class UserProfileFragment extends Fragment {
         if (activity != null) {
             sharedPreferences = requireActivity().getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         }
-
     }
 
     @Override
@@ -42,13 +41,24 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupUI(view);
+        getAndSetSendDataFromAdapterOfWelcomeFragment();
     }
 
-    private void setupUI(View view){
+    private void setupUI(View view) {
         tvUsername = view.findViewById(R.id.tv_username_userProfile);
         tvPassword = view.findViewById(R.id.tv_pass_userProfile);
         tvFirstname = view.findViewById(R.id.tv_firstname_userProfile);
         tvLastname = view.findViewById(R.id.tv_lastname_userProfile);
+    }
 
+
+
+    private void getAndSetSendDataFromAdapterOfWelcomeFragment(){
+        if (getArguments() != null) {
+            tvLastname.setText(getArguments().getString(Constants.INTENT_LASTNAME));
+            tvFirstname.setText(getArguments().getString(Constants.INTENT_FIRSTNAME));
+            tvUsername.setText(getArguments().getString(Constants.INTENT_USERNAME));
+            tvPassword.setText(getArguments().getString(Constants.INTENT_PASSWORD));
+        }
     }
 }
