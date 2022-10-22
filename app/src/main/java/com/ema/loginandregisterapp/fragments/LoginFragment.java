@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.ema.loginandregisterapp.Constants;
 import com.ema.loginandregisterapp.R;
 import com.ema.loginandregisterapp.User;
+import com.ema.loginandregisterapp.UserDataStoreImpl;
 import com.ema.loginandregisterapp.UserUtil;
 
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.List;
 public class LoginFragment extends BaseFragment {
 
     private SharedPreferences sharedPreferences;
+    private UserDataStoreImpl userDataStoreImpl;
     EditText etUsername;
     EditText etPassword;
     Button btnLogin;
@@ -39,6 +41,7 @@ public class LoginFragment extends BaseFragment {
         Activity activity = getActivity();
         if (activity != null) {
             sharedPreferences = requireActivity().getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
+            userDataStoreImpl = new UserDataStoreImpl(sharedPreferences);
         }
 
     }
@@ -55,7 +58,7 @@ public class LoginFragment extends BaseFragment {
 
         setupUI(view);
         onRestoreInstanceState(savedInstanceState);
-        getSendDataFromRegisterFragment(etUsername,etPassword,loadSavedUserFromPreferences());
+        getSendDataFromRegisterFragment(etUsername, etPassword, loadSavedUserFromPreferences());
     }
 
 
@@ -115,13 +118,15 @@ public class LoginFragment extends BaseFragment {
     //shared prefrences
     @SuppressLint("CommitPrefEdits")
     private void saveUsernameInPreferences(String username) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Constants.KEY_SHARED_PREFERENCES_EDIT_LOAD, username);
-        editor.commit();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(Constants.KEY_SHARED_PREFERENCES_EDIT_LOAD, username);
+//        editor.commit();
+        userDataStoreImpl.addUser(username);
     }
 
     private String loadSavedUserFromPreferences() {
-        String username = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_EDIT_LOAD, "");
+        //String username = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_EDIT_LOAD, "");
+        String username = userDataStoreImpl.loadUser();
 
         if (!username.isEmpty() && username != null) {
             return username;
@@ -131,8 +136,9 @@ public class LoginFragment extends BaseFragment {
     }
 
     private boolean checkIfTheRegisteredUserExist(String username, String pass) {
-        String users = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_LIST, "");
-        List<User> usersFromString = UserUtil.userListFromString(users);
+        //  String users = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_LIST, "");
+        // List<User> usersFromString = UserUtil.userListFromString(users);
+        List<User> usersFromString = userDataStoreImpl.loadUsers();
 
         for (User user : usersFromString) {
             if (user.getUsername().equals(username) && user.getPassword().equals(pass)) {

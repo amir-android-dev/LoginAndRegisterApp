@@ -24,6 +24,7 @@ import java.util.List;
 
 public class RegisterFragment extends BaseFragment {
     SharedPreferences sharedPreferences;
+    UserDataStoreImpl userDataStoreImpl;
 
     EditText etUsername;
     EditText etPassword;
@@ -38,6 +39,7 @@ public class RegisterFragment extends BaseFragment {
         Activity activity = getActivity();
         if (activity != null) {
             sharedPreferences = requireActivity().getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
+            userDataStoreImpl = new UserDataStoreImpl(sharedPreferences);
         }
 
     }
@@ -115,15 +117,17 @@ public class RegisterFragment extends BaseFragment {
         currentlySaveUserList.add(user);
         String userListToString = UserUtil.userListToString(currentlySaveUserList);
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Constants.KEY_SHARED_PREFERENCES_LIST, userListToString);
-        editor.commit();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(Constants.KEY_SHARED_PREFERENCES_LIST, userListToString);
+//        editor.commit();
+        userDataStoreImpl.addUsers(userListToString);
 
     }
 
     private List<User> loadUsers() {
-        String userInString = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_LIST, "");
-        List<User> users = UserUtil.userListFromString(userInString);
+//        String userInString = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_LIST, "");
+//        List<User> users = UserUtil.userListFromString(userInString);
+        List<User> users = userDataStoreImpl.loadUsers();
         return users;
     }
 

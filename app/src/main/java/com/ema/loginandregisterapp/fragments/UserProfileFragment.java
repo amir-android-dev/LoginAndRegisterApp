@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.ema.loginandregisterapp.Constants;
 import com.ema.loginandregisterapp.R;
 
-
 public class UserProfileFragment extends Fragment {
     SharedPreferences sharedPreferences;
     TextView tvUsername;
@@ -28,7 +27,6 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Activity activity = getActivity();
         if (activity != null) {
             sharedPreferences = requireActivity().getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -53,7 +51,6 @@ public class UserProfileFragment extends Fragment {
         tvFirstname = view.findViewById(R.id.tv_firstname_userProfile);
         tvLastname = view.findViewById(R.id.tv_lastname_userProfile);
     }
-
 
 
     private void getAndSetSendDataFromAdapterOfWelcomeFragment(){
