@@ -50,7 +50,9 @@ public class LoginFragment extends BaseFragment {
 
         setupUI(view);
         onRestoreInstanceState(savedInstanceState);
+        getSendDataFromRegisterFragment(etUsername,etPassword,loadSavedUserFromPreferences());
     }
+
 
     private void setupUI(View view) {
         etUsername = view.findViewById(R.id.et_username_login);
@@ -58,7 +60,6 @@ public class LoginFragment extends BaseFragment {
         tvRegister = view.findViewById(R.id.tv_register_login);
         btnLogin = view.findViewById(R.id.btn_login);
 
-        etUsername.setText(loadSavedUserFromPreferences());
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,9 +137,9 @@ public class LoginFragment extends BaseFragment {
         return false;
     }
 
-    protected static LoginFragment newInstance() {
-        return new LoginFragment();
-    }
+//    protected static LoginFragment newInstance() {
+//        return new LoginFragment();
+//    }
 
 
 }

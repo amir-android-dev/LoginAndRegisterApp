@@ -2,6 +2,7 @@ package com.ema.loginandregisterapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -30,7 +31,7 @@ public class BaseFragment extends Fragment {
     }
 
     //naviagte
-    //login
+    //todo login
     public void navigateFromLoginToRegister(String username, String password, View view) {
         NavDirections action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment(username, password);
         Navigation.findNavController(view).navigate(action);
@@ -41,14 +42,33 @@ public class BaseFragment extends Fragment {
         Navigation.findNavController(view).navigate(action);
     }
 
-    //register
-    public void getSendDateFromRegisterFragment(EditText etUsername, EditText etPassword) {
+    public void getSendDataFromRegisterFragment(EditText etUsername, EditText etPassword, String usernamePreferences) {
+        LoginFragmentArgs args = LoginFragmentArgs.fromBundle(getArguments());
+        if (args.getUsername().equals("em")) {
+            etUsername.setText(usernamePreferences);
+            etPassword.setText("");
+
+        } else {
+            etUsername.setText(args.getUsername());
+            etPassword.setText(args.getPassword());
+        }
+    }
+
+
+    //todo register
+    public void getSendDateFromLoginFragment(EditText etUsername, EditText etPassword) {
         RegisterFragmentArgs args = RegisterFragmentArgs.fromBundle(getArguments());
         etUsername.setText(args.getUsername());
         etPassword.setText(args.getPassword());
     }
-    public void goBackToLoginFragment(View view){
-        Navigation.findNavController(view).popBackStack();
+
+    public void goBackToLoginFragment(View view, String username, String password, String firstname, String lastname) {
+        NavDirections action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment(username, password);
+        Navigation.findNavController(view).navigate(action);
+        displayToast(requireContext(), "Hello " + firstname + " " + lastname);
+
+
+        // Navigation.findNavController(view).popBackStack();
     }
 
 

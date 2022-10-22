@@ -34,7 +34,7 @@ public class RegisterFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         Activity activity = getActivity();
-        if(activity!= null){
+        if (activity != null) {
             sharedPreferences = requireActivity().getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
         }
 
@@ -43,7 +43,7 @@ public class RegisterFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_register,container,false);
+        return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class RegisterFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setupUI(view);
         onRestoreInstanceState(savedInstanceState);
-        getSendDateFromRegisterFragment(etUsername,etPassword);
+        getSendDateFromLoginFragment(etUsername, etPassword);
     }
 
     private void setupUI(View view) {
@@ -63,9 +63,6 @@ public class RegisterFragment extends BaseFragment {
         btnRegister = view.findViewById(R.id.btn_register);
 
 
-
-
-
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +72,8 @@ public class RegisterFragment extends BaseFragment {
                 String lastname = etLastname.getText().toString();
 
                 saveUsers(username, pass, firstname, lastname);
-                goBackToLoginFragment(view);
+                goBackToLoginFragment(view, username, pass, firstname, lastname);
+
             }
         });
     }

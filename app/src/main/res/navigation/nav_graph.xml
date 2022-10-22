@@ -15,10 +15,12 @@
             app:destination="@id/registerFragment" />
         <argument
             android:name="username"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue='em' />
         <argument
             android:name="password"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue='em' />
         <action
             android:id="@+id/action_loginFragment_to_welcomeFragment"
             app:destination="@id/welcomeFragment" />
@@ -34,6 +36,14 @@
         <argument
             android:name="password"
             app:argType="string" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" >
+            <argument
+                android:name="username" />
+            <argument
+                android:name="password" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/welcomeFragment"
@@ -49,4 +59,8 @@
         android:name="com.ema.loginandregisterapp.UserProfileFragment"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" />
+    <argument
+        android:name="username" />
+    <argument
+        android:name="password" />
 </navigation>

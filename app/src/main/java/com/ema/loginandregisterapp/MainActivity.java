@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends BaseActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,12 +16,13 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    void loadLoginFragment() {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-        LoginFragment loginFragment = LoginFragment.newInstance();
-        fragmentTransaction.replace(R.id.fragment_container_view_main_activity, loginFragment);
-        fragmentTransaction.commit();
-
-    }
 }
+
+//    void loadLoginFragment() {
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//
+//        LoginFragment loginFragment = LoginFragment.newInstance();
+//        fragmentTransaction.replace(R.id.fragment_container_view_main_activity, loginFragment);
+//        fragmentTransaction.commit();
+//
+//    }
