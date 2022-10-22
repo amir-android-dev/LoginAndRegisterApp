@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WelcomeFragment"
+            android:name=".fragments.WelcomeFragment"
             android:exported="false" />
 
 

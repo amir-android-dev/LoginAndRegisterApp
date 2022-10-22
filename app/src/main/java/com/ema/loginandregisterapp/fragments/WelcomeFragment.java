@@ -1,4 +1,4 @@
-package com.ema.loginandregisterapp;
+package com.ema.loginandregisterapp.fragments;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -16,6 +16,13 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.ema.loginandregisterapp.Constants;
+import com.ema.loginandregisterapp.R;
+import com.ema.loginandregisterapp.User;
+import com.ema.loginandregisterapp.UserAdapter;
+import com.ema.loginandregisterapp.UserUtil;
+import com.ema.loginandregisterapp.fragments.BaseFragment;
 
 import java.util.List;
 

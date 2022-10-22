@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.ema.loginandregisterapp.fragments.BaseFragment;
+
 import java.util.List;
 
 public class RegisterFragment extends BaseFragment {

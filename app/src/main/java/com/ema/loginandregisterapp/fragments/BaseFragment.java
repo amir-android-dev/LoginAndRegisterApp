@@ -1,4 +1,4 @@
-package com.ema.loginandregisterapp;
+package com.ema.loginandregisterapp.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,10 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+
+import com.ema.loginandregisterapp.Constants;
+import com.ema.loginandregisterapp.RegisterFragmentArgs;
+import com.ema.loginandregisterapp.RegisterFragmentDirections;
 
 public class BaseFragment extends Fragment {
 

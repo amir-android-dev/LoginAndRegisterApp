@@ -1,4 +1,4 @@
-package com.ema.loginandregisterapp;
+package com.ema.loginandregisterapp.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.ema.loginandregisterapp.Constants;
+import com.ema.loginandregisterapp.R;
 
 
 public class UserProfileFragment extends Fragment {

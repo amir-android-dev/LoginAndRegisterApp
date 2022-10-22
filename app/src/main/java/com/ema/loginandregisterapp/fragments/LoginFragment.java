@@ -1,4 +1,4 @@
-package com.ema.loginandregisterapp;
+package com.ema.loginandregisterapp.fragments;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ema.loginandregisterapp.Constants.INTENT_PASSWORD;
@@ -17,6 +17,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.ema.loginandregisterapp.Constants;
+import com.ema.loginandregisterapp.R;
+import com.ema.loginandregisterapp.User;
+import com.ema.loginandregisterapp.UserUtil;
 
 import java.util.List;
 
