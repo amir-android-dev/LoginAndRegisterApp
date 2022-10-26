@@ -10,14 +10,23 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.ema.loginandregisterapp.fragments.WelcomeFragmentDirections;
 
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<MViewHolder> {
+
+    interface Callback{
+
+    };
     List<User> users;
     Context context;
+
+
 
     public UserAdapter(List<User> users, Context context) {
         this.context = context;
@@ -40,18 +49,14 @@ public class UserAdapter extends RecyclerView.Adapter<MViewHolder> {
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.INTENT_USERNAME, user.getUsername());
-                bundle.putString(Constants.INTENT_PASSWORD, user.getPassword());
-                bundle.putString(Constants.INTENT_FIRSTNAME, user.getFirstname());
-                bundle.putString(Constants.INTENT_LASTNAME, user.getLastname());
-
-                Navigation.findNavController(v).navigate(R.id.userProfileFragment, bundle);
+                NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToUserProfileFragment(user);
+                Navigation.findNavController(holder.itemView).navigate(action);
 
             }
         });
     }
+
+
 
     @Override
     public int getItemCount() {

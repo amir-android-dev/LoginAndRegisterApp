@@ -1,10 +1,14 @@
 package com.ema.loginandregisterapp.fragments;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +16,9 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.ema.loginandregisterapp.Constants;
+import com.ema.loginandregisterapp.User;
+import com.ema.loginandregisterapp.UserBroadcastReceiver;
+import com.ema.loginandregisterapp.UserIntentService;
 
 
 public class BaseFragment extends Fragment {
@@ -69,10 +76,23 @@ public class BaseFragment extends Fragment {
         NavDirections action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment(username, password);
         Navigation.findNavController(view).navigate(action);
         displayToast(requireContext(), "Hello " + firstname + " " + lastname);
-
-
         // Navigation.findNavController(view).popBackStack();
     }
+
+    //todo welcome
+
+
+
+    //todo userProfile
+    public void getAndSetSendDataFromAdapterOfWelcomeFragment(TextView tvUsername, TextView tvPassword, TextView tvFirstname, TextView tvLastname){
+        UserProfileFragmentArgs args = UserProfileFragmentArgs.fromBundle(getArguments());
+        User user = args.getUser();
+        tvUsername.setText(user.getUsername());
+        tvPassword.setText(user.getPassword());
+        tvFirstname.setText(user.getFirstname());
+        tvLastname.setText(user.getLastname());
+    }
+
 
 
 }

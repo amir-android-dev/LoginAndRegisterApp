@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +17,8 @@ import android.widget.TextView;
 import com.ema.loginandregisterapp.Constants;
 import com.ema.loginandregisterapp.R;
 
-public class UserProfileFragment extends Fragment {
+
+public class UserProfileFragment extends BaseFragment {
     SharedPreferences sharedPreferences;
     TextView tvUsername;
     TextView tvPassword;
@@ -42,7 +43,7 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupUI(view);
-        getAndSetSendDataFromAdapterOfWelcomeFragment();
+        getAndSetSendDataFromAdapterOfWelcomeFragment(tvUsername,tvPassword,tvFirstname,tvLastname);
     }
 
     private void setupUI(View view) {
@@ -53,12 +54,4 @@ public class UserProfileFragment extends Fragment {
     }
 
 
-    private void getAndSetSendDataFromAdapterOfWelcomeFragment(){
-        if (getArguments() != null) {
-            tvLastname.setText(getArguments().getString(Constants.INTENT_LASTNAME));
-            tvFirstname.setText(getArguments().getString(Constants.INTENT_FIRSTNAME));
-            tvUsername.setText(getArguments().getString(Constants.INTENT_USERNAME));
-            tvPassword.setText(getArguments().getString(Constants.INTENT_PASSWORD));
-        }
-    }
 }

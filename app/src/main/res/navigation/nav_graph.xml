@@ -58,7 +58,11 @@
         android:id="@+id/userProfileFragment"
         android:name="com.ema.loginandregisterapp.fragments.UserProfileFragment"
         android:label="fragment_user_profile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_user_profile" >
+        <argument
+            android:name="user"
+            app:argType="com.ema.loginandregisterapp.User" />
+    </fragment>
     <argument
         android:name="username" />
     <argument
