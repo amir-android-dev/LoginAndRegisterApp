@@ -26,13 +26,14 @@ import com.ema.loginandregisterapp.Constants;
 import com.ema.loginandregisterapp.R;
 import com.ema.loginandregisterapp.User;
 import com.ema.loginandregisterapp.UserAdapter;
+import com.ema.loginandregisterapp.UserBroadcastReceiver;
 import com.ema.loginandregisterapp.UserDataStoreImpl;
 import com.ema.loginandregisterapp.UserIntentService;
 import com.ema.loginandregisterapp.UserUtil;
 
 import java.util.List;
 
-public class WelcomeFragment extends BaseFragment {
+public class WelcomeFragment extends BaseFragment implements UserBroadcastReceiver.UpdateCallback {
     SharedPreferences sharedPreferences;
     UserDataStoreImpl userDataStoreImpl;
     BroadcastReceiver broadcastReceiver;
@@ -95,24 +96,16 @@ public class WelcomeFragment extends BaseFragment {
         return userDataStoreImpl.loadUsers();
     }
 
+    /** intentService implementation**/
 
+    @Override
+    public void newUserReceived(User user) {
+        userDataStoreImpl.addUser(user);
+        adapter.getUpdateUsers(userDataStoreImpl.loadUsers());
+    }
     public void startServiceAndRegisterBroadcast() {
         requireActivity().startService(new Intent(requireActivity(), UserIntentService.class));
-
-        //register our receiver
-//        broadcastReceiver = new UserBroadcastReceiver();
-//        IntentFilter filter = new IntentFilter(Constants.NEW_USER_SERVICE_ACTION);
-//        requireContext().registerReceiver(broadcastReceiver,filter);
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String userInString = intent.getStringExtra(Constants.NEW_USER_SERVICE);
-                Log.e("TAGBROADCAST", userInString);
-                User user = UserUtil.userFromString(userInString);
-                userDataStoreImpl.addUser(user);
-                adapter.getUpdateUsers(userDataStoreImpl.loadUsers());
-            }
-        };
+        broadcastReceiver = new UserBroadcastReceiver(this);
         IntentFilter filter = new IntentFilter(Constants.NEW_USER_SERVICE_ACTION);
         requireContext().registerReceiver(broadcastReceiver,filter);
     }
@@ -137,4 +130,7 @@ public class WelcomeFragment extends BaseFragment {
         super.onPause();
         stopAndUnregisterService();
     }
+
+
+
 }
