@@ -1,4 +1,4 @@
-package com.ema.loginandregisterapp;
+package com.ema.loginandregisterapp.fragments;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ema.loginandregisterapp.Constants.INTENT_FIRSTNAME;
@@ -18,6 +18,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.ema.loginandregisterapp.Constants;
+import com.ema.loginandregisterapp.R;
+import com.ema.loginandregisterapp.User;
+import com.ema.loginandregisterapp.UserDataStoreImpl;
+import com.ema.loginandregisterapp.UserUtil;
 import com.ema.loginandregisterapp.fragments.BaseFragment;
 
 import java.util.List;
@@ -117,16 +122,12 @@ public class RegisterFragment extends BaseFragment {
         currentlySaveUserList.add(user);
         String userListToString = UserUtil.userListToString(currentlySaveUserList);
 
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString(Constants.KEY_SHARED_PREFERENCES_LIST, userListToString);
-//        editor.commit();
         userDataStoreImpl.addUsers(userListToString);
 
     }
 
     private List<User> loadUsers() {
-//        String userInString = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_LIST, "");
-//        List<User> users = UserUtil.userListFromString(userInString);
+
         List<User> users = userDataStoreImpl.loadUsers();
         return users;
     }

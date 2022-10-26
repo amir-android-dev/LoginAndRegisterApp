@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginAndRegisterApp"
         tools:targetApi="31">
+        <service android:name=".UserIntentService"/>
         <activity
             android:name=".MainActivity"
             android:exported="true" >
@@ -22,14 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".fragments.WelcomeFragment"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".fragments.WelcomeFragment"-->
+<!--            android:exported="false" />-->
 
 
-        <activity
-            android:name=".RegisterFragment"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".RegisterFragment"-->
+<!--            android:exported="false" />-->
 
     </application>
 

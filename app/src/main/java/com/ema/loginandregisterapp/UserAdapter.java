@@ -1,10 +1,13 @@
 package com.ema.loginandregisterapp;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.navigation.Navigation;
@@ -53,6 +56,12 @@ public class UserAdapter extends RecyclerView.Adapter<MViewHolder> {
     @Override
     public int getItemCount() {
         return users.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void getUpdateUsers(List<User> updateUsers) {
+        users = updateUsers;
+        notifyDataSetChanged();
     }
 }
 

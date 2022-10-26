@@ -4,8 +4,13 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +27,15 @@ import com.ema.loginandregisterapp.R;
 import com.ema.loginandregisterapp.User;
 import com.ema.loginandregisterapp.UserAdapter;
 import com.ema.loginandregisterapp.UserDataStoreImpl;
+import com.ema.loginandregisterapp.UserIntentService;
 import com.ema.loginandregisterapp.UserUtil;
-import com.ema.loginandregisterapp.fragments.BaseFragment;
 
 import java.util.List;
 
 public class WelcomeFragment extends BaseFragment {
     SharedPreferences sharedPreferences;
     UserDataStoreImpl userDataStoreImpl;
+    BroadcastReceiver broadcastReceiver;
     TextView tvName;
 
     UserAdapter adapter;
@@ -58,6 +64,7 @@ public class WelcomeFragment extends BaseFragment {
         setupUI(view);
         sayHelloToCurrentLoginUser(tvName);
         setupAdapter();
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -69,7 +76,6 @@ public class WelcomeFragment extends BaseFragment {
 
     @SuppressLint("SetTextI18n")
     private void sayHelloToCurrentLoginUser(TextView textView) {
-        // String username = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_EDIT_LOAD, "");
         String username = userDataStoreImpl.loadUser();
         textView.setText(getString(R.string.hello) + " " + username);
     }
@@ -86,10 +92,49 @@ public class WelcomeFragment extends BaseFragment {
     }
 
     public List<User> getAllUsers() {
-//        //loading the list of users from login acitivity
-//        String userJson = sharedPreferences.getString(Constants.KEY_SHARED_PREFERENCES_LIST, "");
-//        //convert the loaded json String to a list of users
-//        return UserUtil.userListFromString(userJson);
         return userDataStoreImpl.loadUsers();
+    }
+
+
+    public void startServiceAndRegisterBroadcast() {
+        requireActivity().startService(new Intent(requireActivity(), UserIntentService.class));
+
+        //register our receiver
+//        broadcastReceiver = new UserBroadcastReceiver();
+//        IntentFilter filter = new IntentFilter(Constants.NEW_USER_SERVICE_ACTION);
+//        requireContext().registerReceiver(broadcastReceiver,filter);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String userInString = intent.getStringExtra(Constants.NEW_USER_SERVICE);
+                Log.e("TAGBROADCAST", userInString);
+                User user = UserUtil.userFromString(userInString);
+                userDataStoreImpl.addUser(user);
+                adapter.getUpdateUsers(userDataStoreImpl.loadUsers());
+            }
+        };
+        IntentFilter filter = new IntentFilter(Constants.NEW_USER_SERVICE_ACTION);
+        requireContext().registerReceiver(broadcastReceiver,filter);
+    }
+
+    private void stopAndUnregisterService(){
+        requireActivity().stopService(new Intent(requireActivity(),UserIntentService.class));
+
+        if(broadcastReceiver != null){
+            requireContext().unregisterReceiver(broadcastReceiver);
+            broadcastReceiver = null;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startServiceAndRegisterBroadcast();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopAndUnregisterService();
     }
 }

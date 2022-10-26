@@ -12,8 +12,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.ema.loginandregisterapp.Constants;
-import com.ema.loginandregisterapp.RegisterFragmentArgs;
-import com.ema.loginandregisterapp.RegisterFragmentDirections;
+
 
 public class BaseFragment extends Fragment {
 

@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.ema.loginandregisterapp.RegisterFragment"
+        android:name="com.ema.loginandregisterapp.fragments.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <argument

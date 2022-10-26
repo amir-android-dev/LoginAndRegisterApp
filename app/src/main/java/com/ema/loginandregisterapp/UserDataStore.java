@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserDataStore {
 
-    public void addUser(String username);
+    public void saveUsername(String username);
 
     public String loadUser();
 
@@ -14,4 +14,5 @@ public interface UserDataStore {
     public List<User> loadUsers();
 
     public void logoutUser();
+    public void addUser(User user);
 }
