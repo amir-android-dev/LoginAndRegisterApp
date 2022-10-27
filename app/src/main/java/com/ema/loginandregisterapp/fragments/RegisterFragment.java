@@ -17,24 +17,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.ema.loginandregisterapp.Constants;
 import com.ema.loginandregisterapp.R;
 import com.ema.loginandregisterapp.User;
 import com.ema.loginandregisterapp.UserDataStoreImpl;
 import com.ema.loginandregisterapp.UserUtil;
-import com.ema.loginandregisterapp.fragments.BaseFragment;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointBackward;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class RegisterFragment extends BaseFragment {
     SharedPreferences sharedPreferences;
     UserDataStoreImpl userDataStoreImpl;
-
+    SimpleDateFormat simpleDateFormat;
     EditText etUsername;
     EditText etPassword;
     EditText etFirstname;
     EditText etLastname;
+    TextView tvBirthdayDate;
     Button btnRegister;
 
     @Override
@@ -46,7 +54,6 @@ public class RegisterFragment extends BaseFragment {
             sharedPreferences = requireActivity().getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
             userDataStoreImpl = new UserDataStoreImpl(sharedPreferences);
         }
-
     }
 
     @Nullable
@@ -64,12 +71,13 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void setupUI(View view) {
-
         etUsername = view.findViewById(R.id.et_username_register);
         etPassword = view.findViewById(R.id.et_pass_register);
         etFirstname = view.findViewById(R.id.et_firstName_register);
         etLastname = view.findViewById(R.id.et_lastName_register);
+        tvBirthdayDate = view.findViewById(R.id.et_date_register);
         btnRegister = view.findViewById(R.id.btn_register);
+        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -79,10 +87,15 @@ public class RegisterFragment extends BaseFragment {
                 String pass = etPassword.getText().toString();
                 String firstname = etFirstname.getText().toString();
                 String lastname = etLastname.getText().toString();
-
                 saveUsers(username, pass, firstname, lastname);
                 goBackToLoginFragment(view, username, pass, firstname, lastname);
+            }
+        });
 
+        tvBirthdayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateChooser();
             }
         });
     }
@@ -111,25 +124,58 @@ public class RegisterFragment extends BaseFragment {
         if (savedInstanceState != null) {
             etLastname.setText(savedInstanceState.getString(INTENT_LASTNAME, ""));
         }
-
     }
 
 
     private void saveUsers(String username, String password, String firstname, String lastname) {
         List<User> currentlySaveUserList = loadUsers();
-        User user = new User(username, password, firstname, lastname);
+        User user = new User(username, password, firstname, lastname, getDateFromString(tvBirthdayDate.getText().toString()));
 
         currentlySaveUserList.add(user);
         String userListToString = UserUtil.userListToString(currentlySaveUserList);
 
         userDataStoreImpl.addUsers(userListToString);
-
     }
 
     private List<User> loadUsers() {
+        return userDataStoreImpl.loadUsers();
+    }
 
-        List<User> users = userDataStoreImpl.loadUsers();
-        return users;
+    private void dateChooser() {
+        CalendarConstraints constraints = new CalendarConstraints.Builder()
+                .setValidator(DateValidatorPointBackward.now())
+                .build();
+
+        Date selectedDate = new Date();
+        if (tvBirthdayDate.getText() != null && !tvBirthdayDate.getText().toString().isEmpty()) {
+            selectedDate = getDateFromString(tvBirthdayDate.getText().toString());
+        }
+        if (selectedDate != null) {
+            MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder
+                    .datePicker()
+                    .setCalendarConstraints(constraints)
+                    .setSelection(selectedDate.getTime())
+                    .setTitleText("SELECT BIRTHDAY")
+                    .build();
+
+            datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+
+                @Override
+                public void onPositiveButtonClick(Long selection) {
+                    tvBirthdayDate.setText(datePicker.getHeaderText());
+                }
+            });
+            datePicker.show(requireActivity().getSupportFragmentManager(), "DATE_PICKER");
+        }
+    }
+
+    private Date getDateFromString(String date) {
+        try {
+            return simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

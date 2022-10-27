@@ -113,7 +113,7 @@ public class WelcomeFragment extends BaseFragment implements UserBroadcastReceiv
             //here we check the permission that are returned  ACCESS_COARSE_LOCATION
             //check if the permission is granted
             if (permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-               // openAndSendDataToUserProfile(this,clickedUsername);
+
                 openAndSendDataToUserProfile(requireView(),clickedUsername);
 
             } else {

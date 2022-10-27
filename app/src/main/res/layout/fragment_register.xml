@@ -45,6 +45,15 @@
             android:drawableStart="@drawable/ic_familyname_24"
             android:hint="@string/lastname" />
 
+        <TextView
+            android:id="@+id/et_date_register"
+            style="@style/myDrawableImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="@string/date"
+            app:drawableStartCompat="@drawable/ic_calendar_month_24" />
+
         <Button
             android:id="@+id/btn_register"
             style="@style/myButton"
