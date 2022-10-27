@@ -14,4 +14,10 @@ public class Constants {
 
     public static final String NEW_USER_SERVICE = "new_user_service";
     public static final String NEW_USER_SERVICE_ACTION = "new_user_service_action";
+
+
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 123;
+
+
+
 }

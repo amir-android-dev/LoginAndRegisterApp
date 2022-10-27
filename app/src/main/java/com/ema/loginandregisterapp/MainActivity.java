@@ -15,7 +15,6 @@ public class MainActivity extends BaseActivity {
        //loadLoginFragment();
     }
 
-
 }
 
 //    void loadLoginFragment() {

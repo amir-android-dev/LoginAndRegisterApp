@@ -3,6 +3,7 @@ package com.ema.loginandregisterapp;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,17 +21,19 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<MViewHolder> {
 
-    interface Callback{
+    public interface Callback {
+        void userClicked(User user);
+    }
 
-    };
     List<User> users;
     Context context;
+    Callback callback;
 
 
-
-    public UserAdapter(List<User> users, Context context) {
+    public UserAdapter(List<User> users, Context context, Callback callback) {
         this.context = context;
         this.users = users;
+        this.callback = callback;
     }
 
     @NonNull
@@ -49,13 +52,10 @@ public class UserAdapter extends RecyclerView.Adapter<MViewHolder> {
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToUserProfileFragment(user);
-                Navigation.findNavController(holder.itemView).navigate(action);
-
+                callback.userClicked(user);
             }
         });
     }
-
 
 
     @Override

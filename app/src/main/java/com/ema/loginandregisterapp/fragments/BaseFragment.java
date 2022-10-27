@@ -1,24 +1,22 @@
 package com.ema.loginandregisterapp.fragments;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
+import android.content.pm.PackageManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.ema.loginandregisterapp.Constants;
 import com.ema.loginandregisterapp.User;
-import com.ema.loginandregisterapp.UserBroadcastReceiver;
-import com.ema.loginandregisterapp.UserIntentService;
 
 
 public class BaseFragment extends Fragment {
@@ -81,7 +79,24 @@ public class BaseFragment extends Fragment {
 
     //todo welcome
 
+    public void openAndSendDataToUserProfile( View view,User user){
+        NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToUserProfileFragment(user);
+        Navigation.findNavController(view).navigate(action);
+        //or
+//        NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToUserProfileFragment(user);
+//        NavHostFragment.findNavController(this).navigate(action);
+    }
 
+
+    //permission
+    //it shows the pop up
+    public void checkLocationPermissionAndOpenUserProfile(User user) {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            openAndSendDataToUserProfile(requireView(),user);
+        } else {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, Constants.LOCATION_PERMISSION_REQUEST_CODE);
+        }
+    }
 
     //todo userProfile
     public void getAndSetSendDataFromAdapterOfWelcomeFragment(TextView tvUsername, TextView tvPassword, TextView tvFirstname, TextView tvLastname){
