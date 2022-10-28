@@ -1,7 +1,5 @@
 package com.ema.loginandregisterapp;
 
-import android.content.SharedPreferences;
-
 import java.util.List;
 
 public interface UserDataStore {

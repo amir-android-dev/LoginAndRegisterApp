@@ -9,8 +9,6 @@ import androidx.annotation.Nullable;
 
 import java.util.Random;
 
-import timber.log.Timber;
-
 public class UserIntentService extends IntentService {
 
     static boolean stopRegisterService;

@@ -1,4 +1,4 @@
-package com.ema.loginandregisterapp.fragments;
+package com.ema.loginandregisterapp.view;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ema.loginandregisterapp.Constants.INTENT_FIRSTNAME;
@@ -15,12 +15,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ema.loginandregisterapp.Constants;
 import com.ema.loginandregisterapp.R;
+import com.ema.loginandregisterapp.model.Gender;
 import com.ema.loginandregisterapp.User;
 import com.ema.loginandregisterapp.UserDataStoreImpl;
 import com.ema.loginandregisterapp.UserUtil;
@@ -31,6 +34,7 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,11 +42,13 @@ public class RegisterFragment extends BaseFragment {
     SharedPreferences sharedPreferences;
     UserDataStoreImpl userDataStoreImpl;
     SimpleDateFormat simpleDateFormat;
+
     EditText etUsername;
     EditText etPassword;
     EditText etFirstname;
     EditText etLastname;
     TextView tvBirthdayDate;
+    Spinner spinnerGender;
     Button btnRegister;
 
     @Override
@@ -68,6 +74,7 @@ public class RegisterFragment extends BaseFragment {
         setupUI(view);
         onRestoreInstanceState(savedInstanceState);
         getSendDateFromLoginFragment(etUsername, etPassword);
+        setAdapterOfSpinner();
     }
 
     private void setupUI(View view) {
@@ -77,6 +84,8 @@ public class RegisterFragment extends BaseFragment {
         etLastname = view.findViewById(R.id.et_lastName_register);
         tvBirthdayDate = view.findViewById(R.id.et_date_register);
         btnRegister = view.findViewById(R.id.btn_register);
+        spinnerGender = view.findViewById(R.id.spinner_gender_register);
+
         simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
 
@@ -87,7 +96,9 @@ public class RegisterFragment extends BaseFragment {
                 String pass = etPassword.getText().toString();
                 String firstname = etFirstname.getText().toString();
                 String lastname = etLastname.getText().toString();
-                saveUsers(username, pass, firstname, lastname);
+                String gender = spinnerGender.getSelectedItem().toString();
+                saveUsers(username, pass, firstname, lastname,gender);
+
                 goBackToLoginFragment(view, username, pass, firstname, lastname);
             }
         });
@@ -98,6 +109,13 @@ public class RegisterFragment extends BaseFragment {
                 dateChooser();
             }
         });
+    }
+
+    private void  setAdapterOfSpinner(){
+        ArrayAdapter<Gender> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item,Gender.values());
+        spinnerGender.setAdapter(adapter);
+
+
     }
 
     @Override
@@ -127,9 +145,9 @@ public class RegisterFragment extends BaseFragment {
     }
 
 
-    private void saveUsers(String username, String password, String firstname, String lastname) {
+    private void saveUsers(String username, String password, String firstname, String lastname,String gender) {
         List<User> currentlySaveUserList = loadUsers();
-        User user = new User(username, password, firstname, lastname, getDateFromString(tvBirthdayDate.getText().toString()));
+        User user = new User(username, password, firstname, lastname, getDateFromString(tvBirthdayDate.getText().toString()),Gender.valueOf(gender));
 
         currentlySaveUserList.add(user);
         String userListToString = UserUtil.userListToString(currentlySaveUserList);
@@ -141,6 +159,7 @@ public class RegisterFragment extends BaseFragment {
         return userDataStoreImpl.loadUsers();
     }
 
+    /**date picker   **/
     private void dateChooser() {
         CalendarConstraints constraints = new CalendarConstraints.Builder()
                 .setValidator(DateValidatorPointBackward.now())

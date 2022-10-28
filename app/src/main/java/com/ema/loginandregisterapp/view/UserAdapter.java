@@ -1,9 +1,7 @@
-package com.ema.loginandregisterapp;
+package com.ema.loginandregisterapp.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Bundle;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +9,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ema.loginandregisterapp.fragments.WelcomeFragmentDirections;
+import com.ema.loginandregisterapp.R;
+import com.ema.loginandregisterapp.User;
 
 import java.util.List;
 
@@ -56,7 +53,6 @@ public class UserAdapter extends RecyclerView.Adapter<MViewHolder> {
             }
         });
     }
-
 
     @Override
     public int getItemCount() {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context=".fragments.RegisterFragment">
+    tools:context=".view.RegisterFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,9 +50,15 @@
             style="@style/myDrawableImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:hint="@string/date"
             app:drawableStartCompat="@drawable/ic_calendar_month_24" />
+
+        <Spinner
+            android:id="@+id/spinner_gender_register"
+            style="@style/mySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
 
         <Button
             android:id="@+id/btn_register"

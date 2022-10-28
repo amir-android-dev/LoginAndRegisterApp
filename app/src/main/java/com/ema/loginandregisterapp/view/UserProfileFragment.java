@@ -1,4 +1,4 @@
-package com.ema.loginandregisterapp.fragments;
+package com.ema.loginandregisterapp.view;
 
 import android.app.Activity;
 import android.content.Context;

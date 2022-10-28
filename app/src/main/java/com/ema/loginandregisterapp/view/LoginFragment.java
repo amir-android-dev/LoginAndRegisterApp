@@ -1,4 +1,4 @@
-package com.ema.loginandregisterapp.fragments;
+package com.ema.loginandregisterapp.view;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ema.loginandregisterapp.Constants.INTENT_PASSWORD;

@@ -1,5 +1,7 @@
 package com.ema.loginandregisterapp;
 
+import com.ema.loginandregisterapp.model.Gender;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,6 +11,7 @@ public class User implements Serializable {
     private String firstname;
     private String lastname;
     private Date birthday;
+    private Gender gender;
 
     public User(String username, String password, String firstname, String lastname) {
         this.username = username;
@@ -17,12 +20,13 @@ public class User implements Serializable {
         this.lastname = lastname;
     }
 
-    public User(String username, String password, String firstname, String lastname, Date birthday) {
+    public User(String username, String password, String firstname, String lastname, Date birthday, Gender gender) {
         this.username = username;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthday = birthday;
+        this.gender = gender;
     }
 
     public String getUsername() {
@@ -63,6 +67,14 @@ public class User implements Serializable {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }
 
