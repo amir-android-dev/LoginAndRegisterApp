@@ -7,6 +7,9 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.ema.loginandregisterapp.model.Gender;
+
+import java.util.Date;
 import java.util.Random;
 
 public class UserIntentService extends IntentService {
@@ -24,7 +27,7 @@ public class UserIntentService extends IntentService {
         while (stopRegisterService) {
             try {
                 //user
-                User user = new User(randomAlphaNumeric(), randomAlphaNumeric(), randomAlphaNumeric(), randomAlphaNumeric());
+                User user = new User(randomAlphaNumeric(), randomAlphaNumeric(), randomAlphaNumeric(), randomAlphaNumeric(), randomDateGenerator(), randomGender(), randomImage());
                 String stringFromUserObject = UserUtil.userToString(user);
                 //intent
                 Intent userIntent = new Intent();
@@ -39,6 +42,28 @@ public class UserIntentService extends IntentService {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static Date randomDateGenerator() {
+        Random rnd;
+        Date dt;
+        long ms;
+        rnd = new Random();
+        ms = -946771200000L + (Math.abs(rnd.nextLong()) % (70L * 365 * 24 * 60 * 60 * 1000));
+        dt = new Date(ms);
+        return dt;
+    }
+
+
+    public static String randomImage() {
+        Random random = new Random();
+        return "https://picsum.photos/seed/" + random.nextInt() + "/200";
+
+    }
+
+    public static Gender randomGender() {
+        int random = new Random().nextInt(3);
+        return Gender.values()[random];
     }
 
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ema.loginandregisterapp.R;
 import com.ema.loginandregisterapp.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -45,6 +47,7 @@ public class UserAdapter extends RecyclerView.Adapter<MViewHolder> {
     public void onBindViewHolder(@NonNull MViewHolder holder, int position) {
         User user = users.get(position);
         holder.tvUserName.setText(user.getUsername());
+        Picasso.get().load(user.getProfileImg()).into(holder.ivProfile);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,11 +71,13 @@ public class UserAdapter extends RecyclerView.Adapter<MViewHolder> {
 
 class MViewHolder extends RecyclerView.ViewHolder {
     TextView tvUserName;
+    ImageView ivProfile;
     CardView cardView;
 
     public MViewHolder(@NonNull View itemView) {
         super(itemView);
         tvUserName = itemView.findViewById(R.id.tv_name_adapter);
+        ivProfile = itemView.findViewById(R.id.iv_profile_adapter);
         cardView = itemView.findViewById(R.id.card_view_adapter);
     }
 }

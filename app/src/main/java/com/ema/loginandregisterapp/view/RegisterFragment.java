@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,14 +33,15 @@ import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointBackward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.TimeZone;
-
 public class RegisterFragment extends BaseFragment {
     SharedPreferences sharedPreferences;
     UserDataStoreImpl userDataStoreImpl;
@@ -49,6 +51,7 @@ public class RegisterFragment extends BaseFragment {
     EditText etPassword;
     EditText etFirstname;
     EditText etLastname;
+    ImageView ivProfile;
     TextView tvBirthdayDate;
     Spinner spinnerGender;
     Button btnRegister;
@@ -89,14 +92,15 @@ public class RegisterFragment extends BaseFragment {
         tvBirthdayDate = view.findViewById(R.id.et_date_register);
         btnRegister = view.findViewById(R.id.btn_register);
         spinnerGender = view.findViewById(R.id.spinner_gender_register);
+        ivProfile = view.findViewById(R.id.iv_profile_register);
 
+        Picasso.get().load(randomImage()).into(ivProfile);
         tvBirthdayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dateChooser();
             }
         });
-
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,21 +110,23 @@ public class RegisterFragment extends BaseFragment {
                 String firstname = etFirstname.getText().toString();
                 String lastname = etLastname.getText().toString();
                 String gender = spinnerGender.getSelectedItem().toString();
-                saveUsers(username, pass, firstname, lastname,gender);
+                saveUsers(username, pass, firstname, lastname, gender);
 
                 goBackToLoginFragment(view, username, pass, firstname, lastname);
             }
         });
-
-
     }
 
-    private void  setAdapterOfSpinner(){
-        ArrayAdapter<Gender> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item,Gender.values());
+    private void setAdapterOfSpinner() {
+        ArrayAdapter<Gender> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, Gender.values());
         spinnerGender.setAdapter(adapter);
-
-
     }
+
+    private String randomImage() {
+        Random random = new Random();
+        return "https://picsum.photos/seed/" + random.nextInt() + "/200";
+    }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -148,9 +154,9 @@ public class RegisterFragment extends BaseFragment {
         }
     }
 
-    private void saveUsers(String username, String password, String firstname, String lastname,String gender) {
+    private void saveUsers(String username, String password, String firstname, String lastname, String gender) {
         List<User> currentlySaveUserList = loadUsers();
-        User user = new User(username, password, firstname, lastname, getDateFromString(tvBirthdayDate.getText().toString()),Gender.valueOf(gender));
+        User user = new User(username, password, firstname, lastname, getDateFromString(tvBirthdayDate.getText().toString()), Gender.valueOf(gender), randomImage());
         Log.i("DATEEEEEEE", String.valueOf(getDateFromString(tvBirthdayDate.getText().toString())));
 
         currentlySaveUserList.add(user);
@@ -163,7 +169,9 @@ public class RegisterFragment extends BaseFragment {
         return userDataStoreImpl.loadUsers();
     }
 
-    /**date picker   **/
+    /**
+     * date picker
+     **/
     private void dateChooser() {
         CalendarConstraints constraints = new CalendarConstraints.Builder()
                 .setValidator(DateValidatorPointBackward.now())
@@ -174,32 +182,30 @@ public class RegisterFragment extends BaseFragment {
             selectedDate = getDateFromString(tvBirthdayDate.getText().toString());
         }
 
-            MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder
-                    .datePicker()
-                    .setCalendarConstraints(constraints)
-                    .setSelection(selectedDate != null ? selectedDate.getTime() : 0)
-                    .setTitleText("SELECT BIRTHDAY")
-                    .build();
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder
+                .datePicker()
+                .setCalendarConstraints(constraints)
+                .setSelection(selectedDate != null ? selectedDate.getTime() : 0)
+                .setTitleText("SELECT BIRTHDAY")
+                .build();
 
-            datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+        datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
 
-                @Override
-                public void onPositiveButtonClick(Long selection) {
-                    tvBirthdayDate.setText(simpleDateFormat.format(selection));
-                }
-            });
-            datePicker.show(requireActivity().getSupportFragmentManager(), "DATE_PICKER");
-
-
+            @Override
+            public void onPositiveButtonClick(Long selection) {
+                tvBirthdayDate.setText(simpleDateFormat.format(selection));
+            }
+        });
+        datePicker.show(requireActivity().getSupportFragmentManager(), "DATE_PICKER");
     }
 
     private Date getDateFromString(String date) {
 
-            try {
-                return simpleDateFormat.parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        try {
+            return simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

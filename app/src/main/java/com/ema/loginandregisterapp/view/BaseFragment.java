@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import androidx.navigation.Navigation;
 
 import com.ema.loginandregisterapp.Constants;
 import com.ema.loginandregisterapp.User;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -102,13 +104,14 @@ public class BaseFragment extends Fragment {
     }
 
     //todo userProfile
-    public void getAndSetSendDataFromAdapterOfWelcomeFragment(TextView tvUsername, TextView tvPassword, TextView tvFirstname, TextView tvLastname, TextView tvBirthday, TextView tvGender) {
+    public void getAndSetSendDataFromAdapterOfWelcomeFragment(TextView tvUsername, TextView tvPassword, TextView tvFirstname, TextView tvLastname, TextView tvBirthday, TextView tvGender, ImageView ivProfile) {
         UserProfileFragmentArgs args = UserProfileFragmentArgs.fromBundle(getArguments());
         User user = args.getUser();
         tvUsername.setText(user.getUsername());
         tvPassword.setText(user.getPassword());
         tvFirstname.setText(user.getFirstname());
         tvLastname.setText(user.getLastname());
+        Picasso.get().load(user.getProfileImg()).into(ivProfile);
 //
 //        Date birthday = user.getBirthday();
 //        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");

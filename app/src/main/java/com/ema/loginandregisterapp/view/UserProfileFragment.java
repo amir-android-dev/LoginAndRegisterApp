@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ema.loginandregisterapp.Constants;
@@ -26,6 +27,7 @@ public class UserProfileFragment extends BaseFragment {
     TextView tvLastname;
     TextView tvBirthday;
     TextView tvGender;
+    ImageView ivProfile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class UserProfileFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupUI(view);
-        getAndSetSendDataFromAdapterOfWelcomeFragment(tvUsername,tvPassword,tvFirstname,tvLastname,tvBirthday,tvGender);
+        getAndSetSendDataFromAdapterOfWelcomeFragment(tvUsername,tvPassword,tvFirstname,tvLastname,tvBirthday,tvGender,ivProfile);
     }
 
     private void setupUI(View view) {
@@ -55,6 +57,7 @@ public class UserProfileFragment extends BaseFragment {
         tvLastname = view.findViewById(R.id.tv_lastname_userProfile);
         tvBirthday = view.findViewById(R.id.tv_birthday_userProfile);
         tvGender = view.findViewById(R.id.tv_gender_userProfile);
+        ivProfile = view.findViewById(R.id.iv_profile_userProfile);
     }
 
 

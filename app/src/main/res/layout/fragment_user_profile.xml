@@ -7,6 +7,12 @@
     android:layout_margin="10dp"
     tools:context=".view.UserProfileFragment">
 
+    <ImageView
+        android:id="@+id/iv_profile_userProfile"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toTopOf="parent"/>
+
 
     <TextView
         android:id="@+id/tv_username_userProfile"
@@ -17,7 +23,8 @@
         android:padding="5dp"
         android:text="@string/hello_blank_fragment"
         app:drawableLeftCompat="@drawable/ic_baseline_rename_24"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/iv_profile_userProfile"
+         />
 
     <TextView
         android:id="@+id/tv_pass_userProfile"
