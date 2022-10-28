@@ -17,6 +17,10 @@ import androidx.navigation.Navigation;
 import com.ema.loginandregisterapp.Constants;
 import com.ema.loginandregisterapp.User;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class BaseFragment extends Fragment {
 
@@ -78,7 +82,7 @@ public class BaseFragment extends Fragment {
 
     //todo welcome
 
-    public void openAndSendDataToUserProfile( View view,User user){
+    public void openAndSendDataToUserProfile(View view, User user) {
         NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToUserProfileFragment(user);
         Navigation.findNavController(view).navigate(action);
         //or
@@ -91,22 +95,28 @@ public class BaseFragment extends Fragment {
     //it shows the pop up
     public void checkLocationPermissionAndOpenUserProfile(User user) {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            openAndSendDataToUserProfile(requireView(),user);
+            openAndSendDataToUserProfile(requireView(), user);
         } else {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, Constants.LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
     //todo userProfile
-    public void getAndSetSendDataFromAdapterOfWelcomeFragment(TextView tvUsername, TextView tvPassword, TextView tvFirstname, TextView tvLastname){
+    public void getAndSetSendDataFromAdapterOfWelcomeFragment(TextView tvUsername, TextView tvPassword, TextView tvFirstname, TextView tvLastname, TextView tvBirthday, TextView tvGender) {
         UserProfileFragmentArgs args = UserProfileFragmentArgs.fromBundle(getArguments());
         User user = args.getUser();
         tvUsername.setText(user.getUsername());
         tvPassword.setText(user.getPassword());
         tvFirstname.setText(user.getFirstname());
         tvLastname.setText(user.getLastname());
-    }
+//
+//        Date birthday = user.getBirthday();
+//        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+//        String dateToString = dateFormat.format(birthday);
 
+        tvBirthday.setText(user.getBirthday().toString());
+        tvGender.setText(user.getGender().toString());
+    }
 
 
 }

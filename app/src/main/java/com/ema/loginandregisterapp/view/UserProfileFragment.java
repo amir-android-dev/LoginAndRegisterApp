@@ -24,6 +24,8 @@ public class UserProfileFragment extends BaseFragment {
     TextView tvPassword;
     TextView tvFirstname;
     TextView tvLastname;
+    TextView tvBirthday;
+    TextView tvGender;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class UserProfileFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupUI(view);
-        getAndSetSendDataFromAdapterOfWelcomeFragment(tvUsername,tvPassword,tvFirstname,tvLastname);
+        getAndSetSendDataFromAdapterOfWelcomeFragment(tvUsername,tvPassword,tvFirstname,tvLastname,tvBirthday,tvGender);
     }
 
     private void setupUI(View view) {
@@ -51,6 +53,8 @@ public class UserProfileFragment extends BaseFragment {
         tvPassword = view.findViewById(R.id.tv_pass_userProfile);
         tvFirstname = view.findViewById(R.id.tv_firstname_userProfile);
         tvLastname = view.findViewById(R.id.tv_lastname_userProfile);
+        tvBirthday = view.findViewById(R.id.tv_birthday_userProfile);
+        tvGender = view.findViewById(R.id.tv_gender_userProfile);
     }
 
 

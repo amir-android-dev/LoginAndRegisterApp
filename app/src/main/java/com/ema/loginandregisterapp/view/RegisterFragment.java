@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class RegisterFragment extends BaseFragment {
     SharedPreferences sharedPreferences;
@@ -60,6 +62,8 @@ public class RegisterFragment extends BaseFragment {
             sharedPreferences = requireActivity().getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
             userDataStoreImpl = new UserDataStoreImpl(sharedPreferences);
         }
+        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     @Nullable
@@ -86,7 +90,12 @@ public class RegisterFragment extends BaseFragment {
         btnRegister = view.findViewById(R.id.btn_register);
         spinnerGender = view.findViewById(R.id.spinner_gender_register);
 
-        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        tvBirthdayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateChooser();
+            }
+        });
 
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -103,12 +112,7 @@ public class RegisterFragment extends BaseFragment {
             }
         });
 
-        tvBirthdayDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dateChooser();
-            }
-        });
+
     }
 
     private void  setAdapterOfSpinner(){
@@ -144,10 +148,10 @@ public class RegisterFragment extends BaseFragment {
         }
     }
 
-
     private void saveUsers(String username, String password, String firstname, String lastname,String gender) {
         List<User> currentlySaveUserList = loadUsers();
         User user = new User(username, password, firstname, lastname, getDateFromString(tvBirthdayDate.getText().toString()),Gender.valueOf(gender));
+        Log.i("DATEEEEEEE", String.valueOf(getDateFromString(tvBirthdayDate.getText().toString())));
 
         currentlySaveUserList.add(user);
         String userListToString = UserUtil.userListToString(currentlySaveUserList);
@@ -169,11 +173,11 @@ public class RegisterFragment extends BaseFragment {
         if (tvBirthdayDate.getText() != null && !tvBirthdayDate.getText().toString().isEmpty()) {
             selectedDate = getDateFromString(tvBirthdayDate.getText().toString());
         }
-        if (selectedDate != null) {
+
             MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder
                     .datePicker()
                     .setCalendarConstraints(constraints)
-                    .setSelection(selectedDate.getTime())
+                    .setSelection(selectedDate != null ? selectedDate.getTime() : 0)
                     .setTitleText("SELECT BIRTHDAY")
                     .build();
 
@@ -181,21 +185,22 @@ public class RegisterFragment extends BaseFragment {
 
                 @Override
                 public void onPositiveButtonClick(Long selection) {
-                    tvBirthdayDate.setText(datePicker.getHeaderText());
+                    tvBirthdayDate.setText(simpleDateFormat.format(selection));
                 }
             });
             datePicker.show(requireActivity().getSupportFragmentManager(), "DATE_PICKER");
-        }
+
+
     }
 
     private Date getDateFromString(String date) {
-        try {
-            return simpleDateFormat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+            try {
+                return simpleDateFormat.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         return null;
     }
-
 
 }
