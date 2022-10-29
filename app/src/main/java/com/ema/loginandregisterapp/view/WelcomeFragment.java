@@ -12,6 +12,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,6 +22,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,6 +70,7 @@ public class WelcomeFragment extends BaseFragment implements UserBroadcastReceiv
         setupUI(view);
         sayHelloToCurrentLoginUser(tvName);
         setupAdapter(view);
+        setupActionBar();
 
     }
 
@@ -90,7 +96,7 @@ public class WelcomeFragment extends BaseFragment implements UserBroadcastReceiv
             @Override
             public void userClicked(User user) {
                 clickedUsername = user;
-                checkLocationPermissionAndOpenUserProfile( clickedUsername);
+                checkLocationPermissionAndOpenUserProfile(clickedUsername);
             }
         });
         rv.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
@@ -163,6 +169,28 @@ public class WelcomeFragment extends BaseFragment implements UserBroadcastReceiv
     public void onPause() {
         super.onPause();
         stopAndUnregisterService();
+    }
+
+
+    private void setupActionBar(){
+
+setBackButton("Welcome", true);
+requireActivity().addMenuProvider(new MenuProvider() {
+    @Override
+    public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+    }
+
+    @Override
+    public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case android.R.id.home:
+                goBackActionBar(requireView());
+        }
+        return false;
+    }
+},getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
     }
 
 }

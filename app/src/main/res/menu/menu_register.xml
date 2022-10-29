@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_clear_fields"
+        android:icon="@drawable/ic_baseline_cleaning_24"
+        android:title="@string/clear_all_fields"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/action_fill_fields"
+        android:icon="@drawable/ic_edit_note_24"
+        android:title="@string/fill_up_fields"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -7,9 +7,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -48,6 +53,7 @@ public class UserProfileFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setupUI(view);
         getAndSetSendDataFromAdapterOfWelcomeFragment(tvUsername,tvPassword,tvFirstname,tvLastname,tvBirthday,tvGender,ivProfile);
+        setupActionBar();
     }
 
     private void setupUI(View view) {
@@ -58,6 +64,27 @@ public class UserProfileFragment extends BaseFragment {
         tvBirthday = view.findViewById(R.id.tv_birthday_userProfile);
         tvGender = view.findViewById(R.id.tv_gender_userProfile);
         ivProfile = view.findViewById(R.id.iv_profile_userProfile);
+    }
+
+    private void setupActionBar(){
+
+        setBackButton("User Profile", true);
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case android.R.id.home:
+                        goBackActionBar(requireView());
+                }
+                return false;
+            }
+        },getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
     }
 
 

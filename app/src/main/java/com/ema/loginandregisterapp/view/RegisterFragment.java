@@ -5,15 +5,23 @@ import static com.ema.loginandregisterapp.Constants.INTENT_FIRSTNAME;
 import static com.ema.loginandregisterapp.Constants.INTENT_LASTNAME;
 import static com.ema.loginandregisterapp.Constants.INTENT_PASSWORD;
 import static com.ema.loginandregisterapp.Constants.INTENT_USERNAME;
+import static com.ema.loginandregisterapp.UserIntentService.randomAlphaNumeric;
+import static com.ema.loginandregisterapp.UserIntentService.randomDateGenerator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,6 +32,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ema.loginandregisterapp.Constants;
+import com.ema.loginandregisterapp.MainActivity;
 import com.ema.loginandregisterapp.R;
 import com.ema.loginandregisterapp.model.Gender;
 import com.ema.loginandregisterapp.User;
@@ -37,11 +46,11 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
+
 public class RegisterFragment extends BaseFragment {
     SharedPreferences sharedPreferences;
     UserDataStoreImpl userDataStoreImpl;
@@ -65,6 +74,7 @@ public class RegisterFragment extends BaseFragment {
             sharedPreferences = requireActivity().getSharedPreferences(Constants.KEY_MAIN_SHARED_PREFERENCES, MODE_PRIVATE);
             userDataStoreImpl = new UserDataStoreImpl(sharedPreferences);
         }
+        //  setHasOptionsMenu(true);
         simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
@@ -82,6 +92,7 @@ public class RegisterFragment extends BaseFragment {
         onRestoreInstanceState(savedInstanceState);
         getSendDateFromLoginFragment(etUsername, etPassword);
         setAdapterOfSpinner();
+        setupActionBar();
     }
 
     private void setupUI(View view) {
@@ -190,7 +201,6 @@ public class RegisterFragment extends BaseFragment {
                 .build();
 
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-
             @Override
             public void onPositiveButtonClick(Long selection) {
                 tvBirthdayDate.setText(simpleDateFormat.format(selection));
@@ -200,7 +210,6 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private Date getDateFromString(String date) {
-
         try {
             return simpleDateFormat.parse(date);
         } catch (ParseException e) {
@@ -209,4 +218,43 @@ public class RegisterFragment extends BaseFragment {
         return null;
     }
 
+    /**
+     * actionbar
+     **/
+    private void setupActionBar() {
+        setBackButton("REGISTER", true);
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.menu_register, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.action_clear_fields:
+                        etFirstname.getText().clear();
+                        etLastname.getText().clear();
+                        etPassword.getText().clear();
+                        etUsername.getText().clear();
+                        tvBirthdayDate.setText("");
+                        spinnerGender.setSelection(0);
+                        return true;
+                    case R.id.action_fill_fields:
+                        etUsername.setText(randomAlphaNumeric());
+                        etPassword.setText(randomAlphaNumeric());
+                        etFirstname.setText(randomAlphaNumeric());
+                        etLastname.setText(randomAlphaNumeric());
+                        tvBirthdayDate.setText(randomDateGenerator().toString());
+                        int random = new Random().nextInt(4);
+                        spinnerGender.setSelection(random);
+                        return true;
+                    case android.R.id.home:
+                        goBackActionBar(requireView());
+                        return true;
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
 }

@@ -10,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.ema.loginandregisterapp.Constants;
+import com.ema.loginandregisterapp.MainActivity;
 import com.ema.loginandregisterapp.User;
 import com.squareup.picasso.Picasso;
 
@@ -82,6 +84,7 @@ public class BaseFragment extends Fragment {
         // Navigation.findNavController(view).popBackStack();
     }
 
+
     //todo welcome
 
     public void openAndSendDataToUserProfile(View view, User user) {
@@ -112,14 +115,23 @@ public class BaseFragment extends Fragment {
         tvFirstname.setText(user.getFirstname());
         tvLastname.setText(user.getLastname());
         Picasso.get().load(user.getProfileImg()).into(ivProfile);
-//
-//        Date birthday = user.getBirthday();
-//        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-//        String dateToString = dateFormat.format(birthday);
-
         tvBirthday.setText(user.getBirthday().toString());
         tvGender.setText(user.getGender().toString());
     }
 
+    //todo global
+    public void goBackActionBar(View view) {
+        Navigation.findNavController(view).popBackStack();
+    }
+
+    public void setBackButton(String title, Boolean setDisplayHome){
+        MainActivity mainActivity = (MainActivity)requireActivity();
+        ActionBar actionBar = mainActivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(setDisplayHome);
+            actionBar.setTitle(title);
+        }
+
+    }
 
 }

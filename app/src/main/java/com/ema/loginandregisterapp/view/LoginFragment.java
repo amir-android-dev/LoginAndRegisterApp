@@ -6,12 +6,16 @@ import static com.ema.loginandregisterapp.Constants.INTENT_USERNAME;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,7 +29,6 @@ import com.ema.loginandregisterapp.UserDataStoreImpl;
 
 import java.util.List;
 public class LoginFragment extends BaseFragment {
-
     private SharedPreferences sharedPreferences;
     private UserDataStoreImpl userDataStoreImpl;
     EditText etUsername;
@@ -56,6 +59,7 @@ public class LoginFragment extends BaseFragment {
         setupUI(view);
         onRestoreInstanceState(savedInstanceState);
         getSendDataFromRegisterFragment(etUsername, etPassword, loadSavedUserFromPreferences());
+        setBackButton(getString(R.string.app_name),false);
     }
 
     private void setupUI(View view) {
@@ -89,7 +93,6 @@ public class LoginFragment extends BaseFragment {
             }
         });
     }
-
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

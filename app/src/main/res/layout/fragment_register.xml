@@ -57,7 +57,10 @@
             style="@style/myDrawableImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="start"
             android:hint="@string/date"
+            android:textSize="18sp"
             app:drawableStartCompat="@drawable/ic_calendar_month_24" />
 
         <Spinner
